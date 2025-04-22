@@ -28,9 +28,13 @@ public class Transaction {
     private InventoryItem inventoryItem;
 
     // Link to StoreRequisition if it is an incoming (received) transaction
-    @ManyToOne
-    @JoinColumn(name = "store_requisition_id")
-    private StoreRequisition storeRequisition;
+//    @ManyToOne
+//    @JoinColumn(name = "store_requisition_id")
+//    private StoreRequisition storeRequisition;
+
+    @OneToOne
+    @JoinColumn(name = "store_requisition_item_id")
+    private StoreRequisitionItem storeRequisitionItem;
 
     // Link to GoodRequisition if it is an outgoing (issued) transaction
     @ManyToOne

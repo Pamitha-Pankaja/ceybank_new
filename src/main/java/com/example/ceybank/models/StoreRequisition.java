@@ -22,21 +22,14 @@ public class StoreRequisition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;  // or storeRequisitionId
+    private Long id;
 
-    private String itemName;
-    private String itemCode;
-    private int requiredQuantity;
-    private int approvedQuantity;
-    private int receivedQuantity;  // this will trigger an 'IN' transaction
-    private LocalDate receivedDate;
+    private String storeRequisitionId; // e.g. SR001, SR002
 
-    private BigDecimal rate;
-    private BigDecimal total;  // total cost, if applicable
+    private LocalDate date;
 
-    // Bi-directional link to transactions that reference this store requisition
     @OneToMany(mappedBy = "storeRequisition", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Transaction> transactions;
+    private List<StoreRequisitionItem> items;
 
 
 }
