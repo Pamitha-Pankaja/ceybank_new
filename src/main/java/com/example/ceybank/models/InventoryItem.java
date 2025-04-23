@@ -2,6 +2,7 @@ package com.example.ceybank.models;
 
 
 import com.example.ceybank.auditing.Auditable;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

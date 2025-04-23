@@ -1,53 +1,98 @@
 package com.example.ceybank.models;
 
-
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.time.LocalDate;
 
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "transactions")
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tid;  // auto
+    @JsonProperty("tid")
+    private Long tid;
 
-    // Link back to the InventoryItem
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
+    @JsonProperty("inventoryItem")
     private InventoryItem inventoryItem;
-
-    // Link to StoreRequisition if it is an incoming (received) transaction
-//    @ManyToOne
-//    @JoinColumn(name = "store_requisition_id")
-//    private StoreRequisition storeRequisition;
 
     @OneToOne
     @JoinColumn(name = "store_requisition_item_id")
     private StoreRequisitionItem storeRequisitionItem;
 
-    // Link to GoodRequisition if it is an outgoing (issued) transaction
     @ManyToOne
     @JoinColumn(name = "good_requisition_id")
+    @JsonProperty("goodRequisition")
     private GoodRequisition goodRequisition;
 
+    @JsonProperty("date")
     private LocalDate date;
 
-    // These two fields can capture the in/out movement (one or both can be zero)
-    private int receivedQuantity; // how many came in
-    private int issuedQuantity;   // how many went out
+    @JsonProperty("receivedQuantity")
+    private int receivedQuantity;
 
-    // You could also store a single `quantity` and a `type` (IN / OUT) if preferred
+    @JsonProperty("issuedQuantity")
+    private int issuedQuantity;
 
+    // === Getters and Setters ===
 
+    public Long getTid() {
+        return tid;
+    }
+
+    public void setTid(Long tid) {
+        this.tid = tid;
+    }
+
+    public InventoryItem getInventoryItem() {
+        return inventoryItem;
+    }
+
+    public void setInventoryItem(InventoryItem inventoryItem) {
+        this.inventoryItem = inventoryItem;
+    }
+
+    public StoreRequisitionItem getStoreRequisitionItem() {
+        return storeRequisitionItem;
+    }
+
+    public void setStoreRequisitionItem(StoreRequisitionItem storeRequisitionItem) {
+        this.storeRequisitionItem = storeRequisitionItem;
+    }
+
+    public GoodRequisition getGoodRequisition() {
+        return goodRequisition;
+    }
+
+    public void setGoodRequisition(GoodRequisition goodRequisition) {
+        this.goodRequisition = goodRequisition;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public int getReceivedQuantity() {
+        return receivedQuantity;
+    }
+
+    public void setReceivedQuantity(int receivedQuantity) {
+        this.receivedQuantity = receivedQuantity;
+    }
+
+    public int getIssuedQuantity() {
+        return issuedQuantity;
+    }
+
+    public void setIssuedQuantity(int issuedQuantity) {
+        this.issuedQuantity = issuedQuantity;
+    }
 }
+
