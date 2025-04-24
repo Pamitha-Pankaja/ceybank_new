@@ -1,62 +1,20 @@
-package com.example.ceybank.models;
+package com.example.ceybank.responses;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "store_requisition_items")
-public class StoreRequisitionItem {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty("id")
+public class StoreRequisitionItemResponse {
     private Long id;
-
-    @JsonProperty("itemCode")
     private String itemCode;
-
-    @JsonProperty("itemName")
     private String itemName;
-
-    @JsonProperty("unit")
     private String unit;
-
-    @JsonProperty("requiredQuantity")
     private int requiredQuantity;
-
-    @JsonProperty("approvedQuantity")
     private int approvedQuantity;
-
-    @JsonProperty("receivedQuantity")
     private int receivedQuantity;
-
-    @JsonProperty("rate")
     private double rate;
-
-    @JsonProperty("total")
     private double total;
-
-    @JsonProperty("grnNo")
     private String grnNo;
-
-    @JsonProperty("receivedDate")
     private LocalDate receivedDate;
-
-    @ManyToOne
-    @JoinColumn(name = "store_requisition_id")
-    private StoreRequisition storeRequisition;
-
-    @ManyToOne
-    @JoinColumn(name = "inventory_item_id")
-    private InventoryItem inventoryItem;
-
-    @OneToOne(mappedBy = "storeRequisitionItem", cascade = CascadeType.ALL)
-    private Transaction transaction;
-
-    // === Getters and Setters ===
+    private Long transactionId;
 
     public Long getId() {
         return id;
@@ -146,29 +104,12 @@ public class StoreRequisitionItem {
         this.receivedDate = receivedDate;
     }
 
-    public StoreRequisition getStoreRequisition() {
-        return storeRequisition;
+    public Long getTransactionId() {
+        return transactionId;
     }
 
-    public void setStoreRequisition(StoreRequisition storeRequisition) {
-        this.storeRequisition = storeRequisition;
-    }
-
-    public InventoryItem getInventoryItem() {
-        return inventoryItem;
-    }
-
-    public void setInventoryItem(InventoryItem inventoryItem) {
-        this.inventoryItem = inventoryItem;
-    }
-
-    public Transaction getTransaction() {
-        return transaction;
-    }
-
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
     }
 }
-
 
