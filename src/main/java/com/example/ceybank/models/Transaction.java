@@ -37,6 +37,9 @@ public class Transaction {
     @JsonProperty("issuedQuantity")
     private int issuedQuantity;
 
+    @JsonProperty("balance")
+    private int balance;
+
     // === Getters and Setters ===
 
     public Long getTid() {
@@ -93,6 +96,14 @@ public class Transaction {
 
     public void setIssuedQuantity(int issuedQuantity) {
         this.issuedQuantity = issuedQuantity;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 }
 

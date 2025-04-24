@@ -134,19 +134,27 @@ public class StoreRequisitionService {
             item.setGrnNo(request.getGrnNo()); // Set common GRN number
             item.setReceivedDate(request.getReceivedDate());
 
-            // Create Transaction
+            InventoryItem inventoryItem = item.getInventoryItem();
+
+// Calculate new balance before saving transaction
+            int newBalance = inventoryItem.getQuantity() + itemRequest.getReceivedQuantity();
+
+// Create transaction with balance
             Transaction transaction = new Transaction();
-            transaction.setInventoryItem(item.getInventoryItem());
+            transaction.setInventoryItem(inventoryItem);
             transaction.setStoreRequisitionItem(item);
             transaction.setReceivedQuantity(itemRequest.getReceivedQuantity());
             transaction.setDate(LocalDate.now());
+            transaction.setBalance(newBalance); // ✅ NEW LINE
+
 
             transactionRepository.save(transaction);
             item.setTransaction(transaction);
 
             // Update inventory quantity
-            InventoryItem inventoryItem = item.getInventoryItem();
-            inventoryItem.setQuantity(inventoryItem.getQuantity() + itemRequest.getReceivedQuantity());
+           // InventoryItem inventoryItem = item.getInventoryItem();
+            //inventoryItem.setQuantity(inventoryItem.getQuantity() + itemRequest.getReceivedQuantity());
+            inventoryItem.setQuantity(newBalance);
             inventoryItemRepository.save(inventoryItem);
 
             storeRequisitionItemRepository.save(item);
