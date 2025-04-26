@@ -23,10 +23,14 @@ public class Transaction {
     @JoinColumn(name = "store_requisition_item_id")
     private StoreRequisitionItem storeRequisitionItem;
 
-    @ManyToOne
-    @JoinColumn(name = "good_requisition_id")
-    @JsonProperty("goodRequisition")
-    private GoodRequisition goodRequisition;
+    @OneToOne
+    @JoinColumn(name = "good_requisition_item_id")
+    private GoodRequisitionItem goodRequisitionItem;
+
+//    @ManyToOne
+//    @JoinColumn(name = "good_requisition_id")
+//    @JsonProperty("goodRequisition")
+//    private GoodRequisition goodRequisition;
 
     @JsonProperty("date")
     private LocalDate date;
@@ -66,13 +70,13 @@ public class Transaction {
         this.storeRequisitionItem = storeRequisitionItem;
     }
 
-    public GoodRequisition getGoodRequisition() {
-        return goodRequisition;
-    }
-
-    public void setGoodRequisition(GoodRequisition goodRequisition) {
-        this.goodRequisition = goodRequisition;
-    }
+//    public GoodRequisition getGoodRequisition() {
+//        return goodRequisition;
+//    }
+//
+//    public void setGoodRequisition(GoodRequisition goodRequisition) {
+//        this.goodRequisition = goodRequisition;
+//    }
 
     public LocalDate getDate() {
         return date;
@@ -104,6 +108,13 @@ public class Transaction {
 
     public void setBalance(int balance) {
         this.balance = balance;
+    }
+
+    public void setGoodRequisitionItem(GoodRequisitionItem goodRequisitionItem) {
+        this.goodRequisitionItem = goodRequisitionItem;
+    }
+    public GoodRequisitionItem getGoodRequisitionItem() {
+        return goodRequisitionItem;
     }
 }
 
