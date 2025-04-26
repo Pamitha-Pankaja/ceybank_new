@@ -3,11 +3,11 @@ package com.example.ceybank.responses;
 import java.time.LocalDate;
 import java.util.List;
 
-public class StoreRequisitionResponse {
+public class GoodRequisitionResponse {
     private Long id;
-    private String storeRequisitionId;
+    private String goodRequisitionId;
     private LocalDate date;
-    private List<StoreRequisitionItemResponse> items;
+    private List<GoodRequisitionItemResponse> items;
 
     public Long getId() {
         return id;
@@ -17,12 +17,12 @@ public class StoreRequisitionResponse {
         this.id = id;
     }
 
-    public String getStoreRequisitionId() {
-        return storeRequisitionId;
+    public String getGoodRequisitionId() {
+        return goodRequisitionId;
     }
 
-    public void setStoreRequisitionId(String storeRequisitionId) {
-        this.storeRequisitionId = storeRequisitionId;
+    public void setGoodRequisitionId(String goodRequisitionId) {
+        this.goodRequisitionId = goodRequisitionId;
     }
 
     public LocalDate getDate() {
@@ -33,11 +33,11 @@ public class StoreRequisitionResponse {
         this.date = date;
     }
 
-    public List<StoreRequisitionItemResponse> getItems() {
+    public List<GoodRequisitionItemResponse> getItems() {
         return items;
     }
 
-    public void setItems(List<StoreRequisitionItemResponse> items) {
+    public void setItems(List<GoodRequisitionItemResponse> items) {
         this.items = items;
     }
 }
