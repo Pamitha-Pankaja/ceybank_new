@@ -34,4 +34,11 @@ public interface ReservationRoomRepository extends JpaRepository<ReservationRoom
             @Param("outDate") LocalDate outDate
     );
 
+
+    @Query("SELECT rr FROM ReservationRoom rr " +
+            "JOIN rr.reservation res " +
+            "WHERE :date >= res.inDate AND :date < res.outDate")
+    List<ReservationRoom> findRoomsBookedOnDate(@Param("date") LocalDate date);
+
+
 }
