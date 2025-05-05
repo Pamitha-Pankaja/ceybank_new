@@ -2,6 +2,7 @@ package com.example.ceybank.services;
 
 import com.example.ceybank.models.InventoryItem;
 import com.example.ceybank.repositories.InventoryItemRepository;
+import com.example.ceybank.responses.InventoryItemResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,11 @@ public class InventoryItemService {
     }
 
     // READ ALL
-    public List<InventoryItem> getAllInventoryItems() {
-        return inventoryItemRepository.findAll();
-    }
+//    public List<InventoryItem> getAllInventoryItems() {
+//        return inventoryItemRepository.findAll();
+//    }
+
+
 
     // READ BY ID
     public InventoryItem getInventoryItemById(Integer id) {
@@ -60,4 +63,27 @@ public class InventoryItemService {
                 .orElseThrow(() -> new RuntimeException("Item not found with ID: " + id));
         inventoryItemRepository.delete(existing);
     }
+
+
+    public List<InventoryItemResponse> getAllInventoryItems() {
+        List<InventoryItem> items = inventoryItemRepository.findAll();
+
+        return items.stream().map(item -> {
+            InventoryItemResponse response = new InventoryItemResponse();
+            response.setItemId(item.getItemId());
+            response.setItemCode(item.getItemCode());
+            response.setItemName(item.getItemName());
+            response.setStatus(item.getStatus());
+            response.setUnit(item.getUnit());
+            response.setCategory(item.getCategory());
+            response.setQuantity(item.getQuantity());
+            response.setReOrderLevel(item.getReOrderLevel());
+            response.setMaximumReorderLevel(item.getMaximumReorderLevel());
+            response.setImage(item.getImage());
+            response.setDescription(item.getDescription());
+            response.setSlug(item.getSlug());
+            return response;
+        }).toList();
+    }
+
 }
