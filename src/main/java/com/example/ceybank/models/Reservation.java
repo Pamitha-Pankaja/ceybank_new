@@ -46,6 +46,15 @@ public class Reservation {
     @JsonProperty("billNos")
     private String billNos;
 
+    @JsonProperty("foodTotal")
+    private double foodTotal;
+
+    @JsonProperty("beverageTotal")
+    private double beverageTotal;
+
+    @JsonProperty("finalTotal")
+    private double finalTotal;
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @JsonProperty("customer")
@@ -153,6 +162,25 @@ public class Reservation {
         this.billNos = billNos;
     }
 
+    public double getFoodTotal() {
+        return foodTotal;
+    }
+    public void setFoodTotal(double foodTotal) {
+        this.foodTotal = foodTotal;
+    }
+    public double getBeverageTotal() {
+        return beverageTotal;
+    }
+    public void setBeverageTotal(double beverageTotal) {
+        this.beverageTotal = beverageTotal;
+    }
+    public double getFinalTotal() {
+        return finalTotal;
+    }
+    public void setFinalTotal(double finalTotal) {
+        this.finalTotal = finalTotal;
+    }
+
     public Customer getCustomer() {
         return customer;
     }
@@ -168,5 +196,6 @@ public class Reservation {
     public void setReservationRooms(List<ReservationRoom> reservationRooms) {
         this.reservationRooms = reservationRooms;
     }
+
 }
 
