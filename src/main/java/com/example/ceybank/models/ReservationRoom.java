@@ -3,6 +3,8 @@ package com.example.ceybank.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class ReservationRoom {
 
@@ -20,6 +22,13 @@ public class ReservationRoom {
     @JoinColumn(name = "reservation_id")
     @JsonProperty("reservation")
     private Reservation reservation;
+
+    @OneToMany(mappedBy = "reservationRoom", cascade = CascadeType.ALL)
+    private List<FoodBill> foodBills;
+
+    @OneToMany(mappedBy = "reservationRoom", cascade = CascadeType.ALL)
+    private List<BeverageBill> beverageBills;
+
 
     // ----- Getters and Setters -----
 
