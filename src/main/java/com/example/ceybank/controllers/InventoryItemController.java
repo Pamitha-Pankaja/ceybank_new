@@ -1,6 +1,7 @@
 package com.example.ceybank.controllers;
 
 import com.example.ceybank.models.InventoryItem;
+import com.example.ceybank.responses.InventoryItemResponse;
 import com.example.ceybank.services.InventoryItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +25,17 @@ public class InventoryItemController {
 
 
     // READ ALL
+//    @GetMapping("/all")
+//    public ResponseEntity<List<InventoryItem>> getAllInventoryItems() {
+//        return ResponseEntity.ok(inventoryItemService.getAllInventoryItems());
+//    }
+
     @GetMapping("/all")
-    public ResponseEntity<List<InventoryItem>> getAllInventoryItems() {
-        return ResponseEntity.ok(inventoryItemService.getAllInventoryItems());
+    public ResponseEntity<List<InventoryItemResponse>> getAllInventoryItems() {
+        List<InventoryItemResponse> responseList = inventoryItemService.getAllInventoryItems();
+        return ResponseEntity.ok(responseList);
     }
+
 
     // READ ONE BY ID
     @GetMapping("/{id}")
