@@ -2,6 +2,8 @@ package com.example.ceybank.controllers;
 
 import com.example.ceybank.models.Reservation;
 import com.example.ceybank.models.Room;
+import com.example.ceybank.responses.ReservationBillResponse;
+import com.example.ceybank.responses.ReservationFinalBillResponse;
 import com.example.ceybank.responses.ReservationRequest;
 import com.example.ceybank.responses.ReservationResponse;
 import com.example.ceybank.services.ReservationService;
@@ -33,6 +35,16 @@ public class ReservationController {
         Reservation reservation = reservationService.createReservation(request);
         ReservationResponse response = reservationService.refactorResponse(reservation);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{reservationId}/bills")
+    public ResponseEntity<ReservationBillResponse> getAllBillsByReservation(@PathVariable Long reservationId) {
+        return ResponseEntity.ok(reservationService.getBillsForReservation(reservationId));
+    }
+
+    @GetMapping("/{reservationId}/final-bill")
+    public ResponseEntity<ReservationFinalBillResponse> getFinalBill(@PathVariable Long reservationId) {
+        return ResponseEntity.ok(reservationService.calculateFinalBill(reservationId));
     }
 
 

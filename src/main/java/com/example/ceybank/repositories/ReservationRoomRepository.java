@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReservationRoomRepository extends JpaRepository<ReservationRoom, Long> {
@@ -39,6 +40,10 @@ public interface ReservationRoomRepository extends JpaRepository<ReservationRoom
             "JOIN rr.reservation res " +
             "WHERE :date >= res.inDate AND :date < res.outDate")
     List<ReservationRoom> findRoomsBookedOnDate(@Param("date") LocalDate date);
+
+    @Query("SELECT rr FROM ReservationRoom rr WHERE rr.reservation.reservationId = :reservationId AND rr.room.roomNo = :roomNo")
+    Optional<ReservationRoom> findByReservationIdAndRoomNo(@Param("reservationId") Long reservationId, @Param("roomNo") String roomNo);
+
 
 
 }

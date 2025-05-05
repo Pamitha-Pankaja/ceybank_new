@@ -55,5 +55,18 @@ public class ReservationRoom {
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
     }
+
+    public List<FoodBill> getFoodBills() {
+        return foodBills;
+    }
+    public void setFoodBills(List<FoodBill> foodBills) {
+        this.foodBills = foodBills;
+    }
+    public List<BeverageBill> getBeverageBills() {
+        return beverageBills;
+    }
+    public void setBeverageBills(List<BeverageBill> beverageBills) {
+        this.beverageBills = beverageBills;
+    }
 }
 
