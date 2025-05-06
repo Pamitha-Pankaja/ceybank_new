@@ -63,5 +63,12 @@ public class StoreRequisitionController {
         return ResponseEntity.ok("Batch received successfully with GRN: " + request.getGrnNo());
     }
 
+    @PutMapping("/approve-status/{id}")
+    public ResponseEntity<String> approveRequisitionStatus(@PathVariable Long id) {
+        storeRequisitionService.approveRequisitionStatus(id);
+        return ResponseEntity.ok("Store requisition approved successfully");
+    }
+
+
 }
 
