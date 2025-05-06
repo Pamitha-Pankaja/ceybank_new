@@ -172,6 +172,38 @@ public class StoreRequisitionService {
     }
 
 
+    public List<StoreRequisitionResponse> getAllRequisitionResponses() {
+        List<StoreRequisition> requisitions = storeRequisitionRepository.findAll();
+
+        return requisitions.stream()
+                .map(this::refactorResponse)
+                .toList();
+    }
+
+    public List<StoreRequisitionItemResponse> getRequisitionItems(Long requisitionId) {
+        StoreRequisition requisition = storeRequisitionRepository.findById(requisitionId)
+                .orElseThrow(() -> new RuntimeException("Store Requisition not found"));
+
+        return requisition.getItems().stream().map(item -> {
+            StoreRequisitionItemResponse itemResponse = new StoreRequisitionItemResponse();
+            itemResponse.setId(item.getId());
+            itemResponse.setItemCode(item.getItemCode());
+            itemResponse.setItemName(item.getItemName());
+            itemResponse.setUnit(item.getUnit());
+            itemResponse.setRequiredQuantity(item.getRequiredQuantity());
+            itemResponse.setApprovedQuantity(item.getApprovedQuantity());
+            itemResponse.setReceivedQuantity(item.getReceivedQuantity());
+            itemResponse.setRate(item.getRate());
+            itemResponse.setTotal(item.getTotal());
+            itemResponse.setGrnNo(item.getGrnNo());
+            itemResponse.setReceivedDate(item.getReceivedDate());
+            itemResponse.setTransactionId(item.getTransaction() != null ? item.getTransaction().getTid() : null);
+            return itemResponse;
+        }).toList();
+    }
+
+
+
 
 
 
