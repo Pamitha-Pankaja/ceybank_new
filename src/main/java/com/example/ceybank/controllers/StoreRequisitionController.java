@@ -85,6 +85,14 @@ public class StoreRequisitionController {
     }
 
 
+    @GetMapping("/summaries")
+    public ResponseEntity<List<StoreRequisitionSummaryResponse>> getRequisitionSummaries() {
+        List<StoreRequisitionSummaryResponse> summaries = storeRequisitionService.getAllRequisitionSummaries();
+        return ResponseEntity.ok(summaries);
+    }
+
+
+
 
 }
 
