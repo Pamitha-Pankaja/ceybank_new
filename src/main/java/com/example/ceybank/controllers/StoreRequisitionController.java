@@ -1,14 +1,14 @@
 package com.example.ceybank.controllers;
 
 import com.example.ceybank.models.StoreRequisition;
-import com.example.ceybank.responses.ApproveStoreRequisitionItemRequest;
-import com.example.ceybank.responses.ReceiveStoreRequisitionBatchRequest;
-import com.example.ceybank.responses.ReceiveStoreRequisitionItemRequest;
-import com.example.ceybank.responses.StoreRequisitionResponse;
+import com.example.ceybank.responses.*;
 import com.example.ceybank.services.StoreRequisitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/store-requisitions")
@@ -68,6 +68,22 @@ public class StoreRequisitionController {
         storeRequisitionService.approveRequisitionStatus(id);
         return ResponseEntity.ok("Store requisition approved successfully");
     }
+
+
+    // Get all store requisitions
+    @GetMapping("/all")
+    public ResponseEntity<List<StoreRequisitionResponse>> getAllRequisitions() {
+        List<StoreRequisitionResponse> responses = storeRequisitionService.getAllRequisitionResponses();
+        return ResponseEntity.ok(responses);
+    }
+
+    // Get items for a specific requisition
+    @GetMapping("/{id}/items")
+    public ResponseEntity<List<StoreRequisitionItemResponse>> getRequisitionItems(@PathVariable Long id) {
+        List<StoreRequisitionItemResponse> items = storeRequisitionService.getRequisitionItems(id);
+        return ResponseEntity.ok(items);
+    }
+
 
 
 }
