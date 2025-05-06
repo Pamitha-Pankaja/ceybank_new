@@ -203,6 +203,18 @@ public class StoreRequisitionService {
     }
 
 
+    public List<StoreRequisitionSummaryResponse> getAllRequisitionSummaries() {
+        List<StoreRequisition> requisitions = storeRequisitionRepository.findAll();
+
+        return requisitions.stream().map(requisition -> {
+            StoreRequisitionSummaryResponse summary = new StoreRequisitionSummaryResponse();
+            summary.setId(requisition.getId());
+            summary.setStoreRequisitionId(requisition.getStoreRequisitionId());
+            summary.setDate(requisition.getDate());
+            summary.setStatus(requisition.getStatus());
+            return summary;
+        }).toList();
+    }
 
 
 
