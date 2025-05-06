@@ -20,6 +20,9 @@ public class StoreRequisition {
     @JsonProperty("date")
     private LocalDate date;
 
+    @JsonProperty("status")
+    private String status;
+
     @OneToMany(mappedBy = "storeRequisition", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonProperty("items")
     private List<StoreRequisitionItem> items;
@@ -48,6 +51,14 @@ public class StoreRequisition {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(java.lang.String status) {
+        this.status = status;
     }
 
     public List<StoreRequisitionItem> getItems() {

@@ -73,6 +73,7 @@ public class StoreRequisitionService {
 
     @Transactional
     public StoreRequisition createStoreRequisition(StoreRequisition requisition) {
+        requisition.setStatus("NOT_APPROVED"); // ✅ Default value
         for (StoreRequisitionItem item : requisition.getItems()) {
             InventoryItem inventoryItem = inventoryItemRepository
                     .findByItemCode(item.getItemCode())
@@ -162,6 +163,16 @@ public class StoreRequisitionService {
     }
 
 
+    public void approveRequisitionStatus(Long id) {
+        StoreRequisition requisition = storeRequisitionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Store Requisition not found"));
+
+        requisition.setStatus("APPROVED");
+        storeRequisitionRepository.save(requisition);
+    }
+
+
+
 
 
     public StoreRequisitionResponse refactorResponse(StoreRequisition requisition) {
@@ -169,6 +180,8 @@ public class StoreRequisitionService {
         response.setId(requisition.getId());
         response.setStoreRequisitionId(requisition.getStoreRequisitionId());
         response.setDate(requisition.getDate());
+        response.setStatus(requisition.getStatus());
+
 
         List<StoreRequisitionItemResponse> itemResponses = requisition.getItems().stream().map(item -> {
             StoreRequisitionItemResponse itemResponse = new StoreRequisitionItemResponse();

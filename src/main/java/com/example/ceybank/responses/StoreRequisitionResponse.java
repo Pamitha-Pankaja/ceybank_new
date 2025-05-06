@@ -7,6 +7,7 @@ public class StoreRequisitionResponse {
     private Long id;
     private String storeRequisitionId;
     private LocalDate date;
+    private String status;
     private List<StoreRequisitionItemResponse> items;
 
     public Long getId() {
@@ -31,6 +32,14 @@ public class StoreRequisitionResponse {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public List<StoreRequisitionItemResponse> getItems() {
