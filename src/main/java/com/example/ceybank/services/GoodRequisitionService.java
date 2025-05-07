@@ -117,4 +117,52 @@ public class GoodRequisitionService {
         return response;
     }
 
+
+
+
+    @Transactional
+    public void addItemsToIssueBatch(IssueBatchAssignRequest request) {
+        for (Long itemId : request.getItemIds()) {
+            GoodRequisitionItem item = goodRequisitionItemRepository.findById(itemId)
+                    .orElseThrow(() -> new RuntimeException("Item not found"));
+            item.setIssueNo(request.getIssueNo());
+            item.setReceivedDate(request.getIssuedDate());
+            goodRequisitionItemRepository.save(item);
+        }
+    }
+
+
+    public List<String> getIssueNosForRequisition(Long requisitionId) {
+        return goodRequisitionItemRepository.findDistinctIssueNosByGoodRequisitionId(requisitionId);
+    }
+
+
+    @Transactional
+    public void updateIssuedItems(List<ReceiveGoodRequisitionItemRequest> items) {
+        for (ReceiveGoodRequisitionItemRequest itemRequest : items) {
+            GoodRequisitionItem item = goodRequisitionItemRepository.findById(itemRequest.getItemId())
+                    .orElseThrow(() -> new RuntimeException("Item not found"));
+
+            item.setIssuedQuantity(itemRequest.getIssuedQuantity());
+
+            InventoryItem inventoryItem = item.getInventoryItem();
+            int newBalance = inventoryItem.getQuantity() - itemRequest.getIssuedQuantity();
+
+            Transaction transaction = new Transaction();
+            transaction.setInventoryItem(inventoryItem);
+            transaction.setGoodRequisitionItem(item);
+            transaction.setIssuedQuantity(itemRequest.getIssuedQuantity());
+            transaction.setDate(LocalDate.now());
+            transaction.setBalance(newBalance);
+
+            transactionRepository.save(transaction);
+            item.setTransaction(transaction);
+            inventoryItem.setQuantity(newBalance);
+            inventoryItemRepository.save(inventoryItem);
+            goodRequisitionItemRepository.save(item);
+        }
+    }
+
+
+
 }

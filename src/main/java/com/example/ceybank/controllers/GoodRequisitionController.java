@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/good-requisitions")
@@ -40,5 +42,29 @@ public class GoodRequisitionController {
         goodRequisitionService.issueBatch(request);
         return ResponseEntity.ok("Batch received successfully with GRN: " + request.getIssueNo());
     }
+
+
+
+
+
+    @PostMapping("/issue/add-batch")
+    public ResponseEntity<String> addItemsToIssueBatch(@RequestBody IssueBatchAssignRequest request) {
+        goodRequisitionService.addItemsToIssueBatch(request);
+        return ResponseEntity.ok("Items assigned to issue batch successfully");
+    }
+
+    @GetMapping("/issue/list/{requisitionId}")
+    public ResponseEntity<List<String>> getIssueNos(@PathVariable Long requisitionId) {
+        return ResponseEntity.ok(goodRequisitionService.getIssueNosForRequisition(requisitionId));
+    }
+
+    @PutMapping("/issue/update-items")
+    public ResponseEntity<String> updateIssueItems(@RequestBody IssueItemUpdateRequest request) {
+        goodRequisitionService.updateIssuedItems(request.getItems());
+        return ResponseEntity.ok("Items updated successfully for issueNo: " + request.getIssueNo());
+    }
+
+
+
 
 }
