@@ -163,6 +163,10 @@ public class GoodRequisitionService {
         }
     }
 
+    public List<GoodRequisitionItem> getItemsByIssueNo(String issueNo) {
+        return goodRequisitionItemRepository.findByIssueNo(issueNo);
+    }
+
 
 
 }

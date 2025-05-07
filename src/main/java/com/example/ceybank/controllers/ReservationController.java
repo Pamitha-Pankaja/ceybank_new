@@ -52,5 +52,13 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getActiveReservation(roomNo, date));
     }
 
+
+    @GetMapping("/full-details")
+    public ResponseEntity<List<ReservationFullResponse>> getAllReservationDetails() {
+        return ResponseEntity.ok(reservationService.getAllReservationDetails());
+    }
+
+
+
 }
 

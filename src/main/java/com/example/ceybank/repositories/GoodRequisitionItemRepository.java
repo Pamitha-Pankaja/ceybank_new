@@ -13,5 +13,8 @@ public interface GoodRequisitionItemRepository extends JpaRepository<GoodRequisi
     @Query("SELECT DISTINCT gri.issueNo FROM GoodRequisitionItem gri WHERE gri.goodRequisition.id = :requisitionId AND gri.issueNo IS NOT NULL")
     List<String> findDistinctIssueNosByGoodRequisitionId(@Param("requisitionId") Long requisitionId);
 
+    List<GoodRequisitionItem> findByIssueNo(String issueNo);
+
+
 }
 

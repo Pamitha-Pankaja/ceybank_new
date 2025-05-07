@@ -292,5 +292,69 @@ public class ReservationService {
 
         return response;
     }
+
+
+
+    public List<ReservationFullResponse> getAllReservationDetails() {
+        List<Reservation> reservations = reservationRepository.findAll();
+        List<ReservationFullResponse> responses = new ArrayList<>();
+
+        for (Reservation reservation : reservations) {
+            ReservationFullResponse r = new ReservationFullResponse();
+            r.setReservationId(reservation.getReservationId());
+            r.setCustomerName(reservation.getCustomer().getNameInFull());
+            r.setNicPassportPf(reservation.getCustomer().getNicPassportPf());
+            r.setInDate(reservation.getInDate());
+            r.setOutDate(reservation.getOutDate());
+            r.setDays(reservation.getDays());
+            r.setTotal(reservation.getTotal());
+            r.setAdvance(reservation.getAdvance());
+            r.setNoOfGuests(reservation.getNoOfGuests());
+            r.setAdults(reservation.getAdults());
+            r.setChildren(reservation.getChildren());
+            r.setModeOfPayment(reservation.getModeOfPayment());
+            r.setVehicleNos(reservation.getVehicleNos());
+            r.setBillNos(reservation.getBillNos());
+
+            List<ReservationFullResponse.RoomInfo> roomInfos = new ArrayList<>();
+            for (ReservationRoom rr : reservation.getReservationRooms()) {
+                ReservationFullResponse.RoomInfo roomInfo = new ReservationFullResponse.RoomInfo();
+                roomInfo.setRoomNo(rr.getRoom().getRoomNo());
+                roomInfo.setRoomType(rr.getRoom().getRoomType().getName());
+                roomInfo.setCurrentRate(rr.getRoom().getRoomType().getCurrentRate());
+
+                // Food Bills
+                List<ReservationFullResponse.BillSummary> foodBillSummaries = rr.getFoodBills().stream().map(fb -> {
+                    ReservationFullResponse.BillSummary s = new ReservationFullResponse.BillSummary();
+                    s.setBillId(fb.getFoodBillId());
+                    s.setMealType(fb.getMealType());
+                    s.setDate(fb.getDate());
+                    s.setGrandTotal(fb.getGrandTotal());
+                    return s;
+                }).toList();
+
+                // Beverage Bills
+                List<ReservationFullResponse.BillSummary> beverageBillSummaries = rr.getBeverageBills().stream().map(bb -> {
+                    ReservationFullResponse.BillSummary s = new ReservationFullResponse.BillSummary();
+                    s.setBillId(bb.getBeverageBillId());
+                    s.setMealType(bb.getMealType());
+                    s.setDate(bb.getDate());
+                    s.setGrandTotal(bb.getGrandTotal());
+                    return s;
+                }).toList();
+
+                roomInfo.setFoodBills(foodBillSummaries);
+                roomInfo.setBeverageBills(beverageBillSummaries);
+
+                roomInfos.add(roomInfo);
+            }
+
+            r.setRooms(roomInfos);
+            responses.add(r);
+        }
+
+        return responses;
+    }
+
 }
 
