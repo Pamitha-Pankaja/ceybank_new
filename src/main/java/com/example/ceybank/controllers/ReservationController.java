@@ -2,10 +2,7 @@ package com.example.ceybank.controllers;
 
 import com.example.ceybank.models.Reservation;
 import com.example.ceybank.models.Room;
-import com.example.ceybank.responses.ReservationBillResponse;
-import com.example.ceybank.responses.ReservationFinalBillResponse;
-import com.example.ceybank.responses.ReservationRequest;
-import com.example.ceybank.responses.ReservationResponse;
+import com.example.ceybank.responses.*;
 import com.example.ceybank.services.ReservationService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +44,13 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.calculateFinalBill(reservationId));
     }
 
+
+    @GetMapping("/active")
+    public ResponseEntity<ActiveReservationResponse> getActiveReservation(
+            @RequestParam String roomNo,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(reservationService.getActiveReservation(roomNo, date));
+    }
 
 }
 
