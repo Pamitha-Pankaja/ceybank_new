@@ -247,5 +247,81 @@ public class StoreRequisitionService {
         response.setItems(itemResponses);
         return response;
     }
+
+
+
+
+
+
+
+
+
+
+    @Transactional
+    public void addItemsToGrn(GrnBatchAssignRequest request) {
+        for (Long itemId : request.getItemIds()) {
+            StoreRequisitionItem item = storeRequisitionItemRepository.findById(itemId)
+                    .orElseThrow(() -> new RuntimeException("Item not found"));
+            item.setGrnNo(request.getGrnNo());
+            item.setReceivedDate(request.getReceivedDate());
+            storeRequisitionItemRepository.save(item);
+        }
+    }
+
+//    public List<String> getGrnsForRequisition(String requisitionId) {
+//        return storeRequisitionItemRepository.findDistinctGrnNosByStoreRequisitionId(requisitionId);
+//    }
+
+      public List<String> getGrnsForRequisition(Long requisitionId) {
+         return storeRequisitionItemRepository.findDistinctGrnNosByStoreRequisitionId(requisitionId);
+      }
+
+
+    public List<StoreRequisitionItemResponse> getItemsByGrn(String grnNo) {
+        List<StoreRequisitionItem> items = storeRequisitionItemRepository.findByGrnNo(grnNo);
+        return items.stream().map(item -> {
+            StoreRequisitionItemResponse res = new StoreRequisitionItemResponse();
+            res.setId(item.getId());
+            res.setItemCode(item.getItemCode());
+            res.setItemName(item.getItemName());
+            res.setUnit(item.getUnit());
+            res.setRequiredQuantity(item.getRequiredQuantity());
+            res.setApprovedQuantity(item.getApprovedQuantity());
+            res.setReceivedQuantity(item.getReceivedQuantity());
+            res.setRate(item.getRate());
+            res.setTotal(item.getTotal());
+            res.setGrnNo(item.getGrnNo());
+            res.setReceivedDate(item.getReceivedDate());
+            return res;
+        }).toList();
+    }
+
+    @Transactional
+    public void updateGrnItems(List<ReceiveStoreRequisitionItemRequest> items) {
+        for (ReceiveStoreRequisitionItemRequest itemRequest : items) {
+            StoreRequisitionItem item = storeRequisitionItemRepository.findById(itemRequest.getItemId())
+                    .orElseThrow(() -> new RuntimeException("Item not found"));
+
+            item.setReceivedQuantity(itemRequest.getReceivedQuantity());
+            item.setRate(itemRequest.getRate());
+            item.setTotal(itemRequest.getTotal());
+
+            InventoryItem inventoryItem = item.getInventoryItem();
+            int newBalance = inventoryItem.getQuantity() + itemRequest.getReceivedQuantity();
+
+            Transaction transaction = new Transaction();
+            transaction.setInventoryItem(inventoryItem);
+            transaction.setStoreRequisitionItem(item);
+            transaction.setReceivedQuantity(itemRequest.getReceivedQuantity());
+            transaction.setDate(LocalDate.now());
+            transaction.setBalance(newBalance);
+
+            transactionRepository.save(transaction);
+            item.setTransaction(transaction);
+            inventoryItem.setQuantity(newBalance);
+            inventoryItemRepository.save(inventoryItem);
+            storeRequisitionItemRepository.save(item);
+        }
+    }
 }
 

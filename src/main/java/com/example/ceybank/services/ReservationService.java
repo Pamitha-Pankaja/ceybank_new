@@ -5,10 +5,7 @@ import com.example.ceybank.repositories.CustomerRepository;
 import com.example.ceybank.repositories.ReservationRepository;
 import com.example.ceybank.repositories.ReservationRoomRepository;
 import com.example.ceybank.repositories.RoomRepository;
-import com.example.ceybank.responses.ReservationBillResponse;
-import com.example.ceybank.responses.ReservationFinalBillResponse;
-import com.example.ceybank.responses.ReservationRequest;
-import com.example.ceybank.responses.ReservationResponse;
+import com.example.ceybank.responses.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -278,6 +275,20 @@ public class ReservationService {
         }
 
         response.setRooms(roomsList);
+
+        return response;
+    }
+
+
+    public ActiveReservationResponse getActiveReservation(String roomNo, LocalDate date) {
+        ReservationRoom rr = reservationRoomRepository.findActiveReservationByRoomAndDate(roomNo, date)
+                .orElseThrow(() -> new RuntimeException("No active reservation found for this room and date"));
+
+        ActiveReservationResponse response = new ActiveReservationResponse();
+        response.setReservationId(rr.getReservation().getReservationId());
+        response.setName(rr.getReservation().getCustomer().getNameInFull());
+        response.setNicPassportPf(rr.getReservation().getCustomer().getNicPassportPf());
+        response.setRoomNo(roomNo);
 
         return response;
     }

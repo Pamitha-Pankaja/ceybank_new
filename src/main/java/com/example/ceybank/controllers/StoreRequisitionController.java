@@ -94,5 +94,49 @@ public class StoreRequisitionController {
 
 
 
+    // 1️⃣ Endpoint to create GRN and assign items (itemId list only)
+    @PostMapping("/grn/add-batch")
+    public ResponseEntity<String> addItemsToGrn(@RequestBody GrnBatchAssignRequest request) {
+        storeRequisitionService.addItemsToGrn(request);
+        return ResponseEntity.ok("Items assigned to GRN successfully");
+    }
+
+    // 2️⃣ Endpoint to get GRN list for a specific Store Requisition ID
+//    @GetMapping("/grn/list/{storeRequisitionId}")
+//    public ResponseEntity<List<String>> getGrnsByStoreRequisition(@PathVariable String storeRequisitionId) {
+//        List<String> grnList = storeRequisitionService.getGrnsForRequisition(storeRequisitionId);
+//        return ResponseEntity.ok(grnList);
+//    }
+
+    @GetMapping("/grn/list/{storeRequisitionId}")
+    public ResponseEntity<List<String>> getGrnsByStoreRequisition(@PathVariable Long storeRequisitionId) {
+        List<String> grnList = storeRequisitionService.getGrnsForRequisition(storeRequisitionId);
+        return ResponseEntity.ok(grnList);
+    }
+
+
+    // 3️⃣ Endpoint to get items by GRN number
+    @GetMapping("/grn/items/{grnNo}")
+    public ResponseEntity<List<StoreRequisitionItemResponse>> getItemsByGrn(@PathVariable String grnNo) {
+        return ResponseEntity.ok(storeRequisitionService.getItemsByGrn(grnNo));
+    }
+
+    // 4️⃣ Endpoint to update GRN item details (rate, qty, total)
+//    @PutMapping("/grn/update-items")
+//    public ResponseEntity<String> updateGrnItems(@RequestBody List<ReceiveStoreRequisitionItemRequest> items) {
+//        storeRequisitionService.updateGrnItems(items);
+//        return ResponseEntity.ok("Items updated successfully");
+//    }
+
+    @PutMapping("/grn/update-items")
+    public ResponseEntity<String> updateGrnItems(@RequestBody GrnItemUpdateRequest request) {
+        storeRequisitionService.updateGrnItems(request.getItems());
+        return ResponseEntity.ok("Items updated successfully");
+    }
+
+
+
+
+
 }
 
