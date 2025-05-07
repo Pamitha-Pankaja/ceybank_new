@@ -1,6 +1,7 @@
 package com.example.ceybank.controllers;
 
 import com.example.ceybank.models.GoodRequisition;
+import com.example.ceybank.models.GoodRequisitionItem;
 import com.example.ceybank.models.StoreRequisition;
 import com.example.ceybank.responses.*;
 import com.example.ceybank.services.GoodRequisitionService;
@@ -63,6 +64,13 @@ public class GoodRequisitionController {
         goodRequisitionService.updateIssuedItems(request.getItems());
         return ResponseEntity.ok("Items updated successfully for issueNo: " + request.getIssueNo());
     }
+
+    @GetMapping("/issue/items/{issueNo}")
+    public ResponseEntity<List<GoodRequisitionItem>> getItemsForIssueNo(@PathVariable String issueNo) {
+        List<GoodRequisitionItem> items = goodRequisitionService.getItemsByIssueNo(issueNo);
+        return ResponseEntity.ok(items);
+    }
+
 
 
 
