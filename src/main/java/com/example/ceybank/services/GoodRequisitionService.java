@@ -169,4 +169,13 @@ public class GoodRequisitionService {
 
 
 
+    public List<GoodRequisitionResponse> getAllRequisitionResponses() {
+        List<GoodRequisition> requisitions = goodRequisitionRepository.findAll();
+
+        return requisitions.stream()
+                .map(this::refactorResponse)
+                .toList();
+    }
+
+
 }

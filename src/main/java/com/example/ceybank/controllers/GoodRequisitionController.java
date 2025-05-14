@@ -72,6 +72,14 @@ public class GoodRequisitionController {
     }
 
 
+    @GetMapping("/all")
+    public ResponseEntity<List<GoodRequisitionResponse>> getAllRequisitions() {
+        List<GoodRequisitionResponse> responses = goodRequisitionService.getAllRequisitionResponses();
+        return ResponseEntity.ok(responses);
+    }
+
+
+
 
 
 
