@@ -1,16 +1,12 @@
 package com.example.ceybank.responses;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.LocalDate;
-import java.util.List;
 
-public class GoodRequisitionResponse {
+public class GoodRequisitionSummaryResponse {
     private Long id;
     private String goodRequisitionId;
     private LocalDate date;
     private String status;
-    private List<GoodRequisitionItemResponse> items;
 
     public Long getId() {
         return id;
@@ -39,16 +35,9 @@ public class GoodRequisitionResponse {
     public String getStatus() {
         return status;
     }
-
     public void setStatus(String status) {
         this.status = status;
     }
 
-    public List<GoodRequisitionItemResponse> getItems() {
-        return items;
-    }
 
-    public void setItems(List<GoodRequisitionItemResponse> items) {
-        this.items = items;
-    }
 }

@@ -178,4 +178,18 @@ public class GoodRequisitionService {
     }
 
 
+    public List<GoodRequisitionSummaryResponse> getAllRequisitionSummaries() {
+        List<GoodRequisition> requisitions = goodRequisitionRepository.findAll();
+
+        return requisitions.stream().map(requisition -> {
+            GoodRequisitionSummaryResponse summary = new GoodRequisitionSummaryResponse();
+            summary.setId(requisition.getId());
+            summary.setGoodRequisitionId(requisition.getGoodRequisitionId());
+            summary.setDate(requisition.getDate());
+            summary.setStatus(requisition.getStatus());
+            return summary;
+        }).toList();
+    }
+
+
 }

@@ -79,6 +79,12 @@ public class GoodRequisitionController {
     }
 
 
+    @GetMapping("/summaries")
+    public ResponseEntity<List<GoodRequisitionSummaryResponse>> getRequisitionSummaries() {
+        List<GoodRequisitionSummaryResponse> summaries = goodRequisitionService.getAllRequisitionSummaries();
+        return ResponseEntity.ok(summaries);
+    }
+
 
 
 

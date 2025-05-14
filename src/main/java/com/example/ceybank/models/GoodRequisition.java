@@ -48,6 +48,9 @@ public class GoodRequisition {
     @JsonProperty("date")
     private LocalDate date;
 
+    @JsonProperty("status")
+    private String status;
+
     @OneToMany(mappedBy = "goodRequisition", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonProperty("items")
     private List<GoodRequisitionItem> items;
@@ -76,6 +79,14 @@ public class GoodRequisition {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public List<GoodRequisitionItem> getItems() {
