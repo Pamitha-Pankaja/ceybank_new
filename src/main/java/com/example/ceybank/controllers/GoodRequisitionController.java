@@ -86,6 +86,12 @@ public class GoodRequisitionController {
     }
 
 
+    @GetMapping("/{id}/items")
+    public ResponseEntity<List<GoodRequisitionItemResponse>> getRequisitionItems(@PathVariable Long id) {
+        List<GoodRequisitionItemResponse> items = goodRequisitionService.getRequisitionItems(id);
+        return ResponseEntity.ok(items);
+    }
+
 
 
 

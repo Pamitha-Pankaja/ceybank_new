@@ -192,4 +192,28 @@ public class GoodRequisitionService {
     }
 
 
+
+    public List<GoodRequisitionItemResponse> getRequisitionItems(Long requisitionId) {
+        GoodRequisition requisition = goodRequisitionRepository.findById(requisitionId)
+                .orElseThrow(() -> new RuntimeException("Store Requisition not found"));
+
+        return requisition.getItems().stream().map(item -> {
+            GoodRequisitionItemResponse itemResponse = new GoodRequisitionItemResponse();
+            itemResponse.setId(item.getId());
+            itemResponse.setItemCode(item.getItemCode());
+            itemResponse.setItemName(item.getItemName());
+            itemResponse.setUnit(item.getUnit());
+            itemResponse.setRequiredQuantity(item.getRequiredQuantity());
+            itemResponse.setApprovedQuantity(item.getApprovedQuantity());
+//            itemResponse.setReceivedQuantity(item.getReceivedQuantity());
+//            itemResponse.setRate(item.getRate());
+//            itemResponse.setTotal(item.getTotal());
+//            itemResponse.setGrnNo(item.getGrnNo());
+            itemResponse.setIssueNo(item.getIssueNo());
+            itemResponse.setReceivedDate(item.getReceivedDate());
+            itemResponse.setTransactionId(item.getTransaction() != null ? item.getTransaction().getTid() : null);
+            return itemResponse;
+        }).toList();
+    }
+
 }
