@@ -1,40 +1,34 @@
-version: '3.8'
-
 services:
-  db:
-    image: mysql:8
-    container_name: mysql
-    restart: always
+  mysql:
+    image: mysql:8.0
+    container_name: ceybank_mysql
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ceybankdb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    ports:
-      - "3306:3306"
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ceybank
+      MYSQL_USER: ceybank_user
+      MYSQL_PASSWORD: ceybank_pass
     volumes:
       - db_data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    ports:
+      - "3306:3306"
 
   app:
-    build: .
-    container_name: hotel-app
+    image: docker.io/pamitha/ceybank:latest
+    container_name: ceybank_app
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ceybank?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: ceybank_user
+      SPRING_DATASOURCE_PASSWORD: ceybank_pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
       - "8080:8080"
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/ceybankdb
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: password
 
 volumes:
-  db_data:
+ db_data:
 
 
 
