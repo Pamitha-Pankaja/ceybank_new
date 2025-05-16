@@ -98,6 +98,12 @@ public class ReservationController {
     }
 
 
+    @GetMapping("/room-bill")
+    public ResponseEntity<List<RoomBillResponse>> getAllRoomBills() {
+        return ResponseEntity.ok(reservationService.getAllRoomBills());
+    }
+
+
 
 
 }
