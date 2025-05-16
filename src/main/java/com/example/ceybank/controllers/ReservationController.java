@@ -103,6 +103,18 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getAllRoomBills());
     }
 
+    @GetMapping("/bills/meals/{foodBillId}")
+    public ResponseEntity<FoodBillResponse> getFoodBillById(@PathVariable Long foodBillId) {
+        return ResponseEntity.ok(reservationService.getFoodBillById(foodBillId));
+    }
+
+
+    @GetMapping("/bills/beverages/{beverageBillId}")
+    public ResponseEntity<BeverageBillResponse> getBeverageBillById(@PathVariable Long beverageBillId) {
+        return ResponseEntity.ok(reservationService.getBeverageBillById(beverageBillId));
+    }
+
+
 
 
 

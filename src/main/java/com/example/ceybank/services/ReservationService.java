@@ -558,6 +558,56 @@ public class ReservationService {
     }
 
 
+    public FoodBillResponse getFoodBillById(Long foodBillId) {
+        FoodBill fb = foodBillRepository.findById(foodBillId)
+                .orElseThrow(() -> new RuntimeException("Food bill not found"));
+
+        FoodBillResponse res = new FoodBillResponse();
+        res.setFoodBillId(fb.getFoodBillId());
+        res.setRoomNo(fb.getReservationRoom().getRoom().getRoomNo());
+        res.setDate(fb.getDate());
+        res.setMealType(fb.getMealType());
+        res.setGrandTotal(fb.getGrandTotal());
+
+        List<FoodBillResponse.FoodBillItemResponse> items = fb.getFoodBillItems().stream().map(item -> {
+            FoodBillResponse.FoodBillItemResponse i = new FoodBillResponse.FoodBillItemResponse();
+            i.setId(item.getId());
+            i.setFoodName(item.getFood().getName());
+            i.setPortions(item.getPortions());
+            i.setTotal(item.getTotal());
+            return i;
+        }).toList();
+
+        res.setFoodBillItems(items);
+        return res;
+    }
+
+
+
+    public BeverageBillResponse getBeverageBillById(Long beverageBillId) {
+        BeverageBill bb = beverageBillRepository.findById(beverageBillId)
+                .orElseThrow(() -> new RuntimeException("Beverage bill not found"));
+
+        BeverageBillResponse res = new BeverageBillResponse();
+        res.setBeverageBillId(bb.getBeverageBillId());
+        res.setRoomNo(bb.getReservationRoom().getRoom().getRoomNo());
+        res.setDate(bb.getDate());
+        res.setMealType(bb.getMealType());
+        res.setGrandTotal(bb.getGrandTotal());
+
+        List<BeverageBillResponse.BeverageBillItemResponse> items = bb.getBeverageBillItems().stream().map(item -> {
+            BeverageBillResponse.BeverageBillItemResponse i = new BeverageBillResponse.BeverageBillItemResponse();
+            i.setId(item.getId());
+            i.setBeverageName(item.getBeverage().getName());
+            i.setBottlesOrGlasses(item.getBottlesOrGlasses());
+            i.setTotal(item.getTotal());
+            return i;
+        }).toList();
+
+        res.setBeverageBillItems(items);
+        return res;
+    }
+
 
 
 
