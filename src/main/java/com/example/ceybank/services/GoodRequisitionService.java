@@ -163,8 +163,27 @@ public class GoodRequisitionService {
         }
     }
 
-    public List<GoodRequisitionItem> getItemsByIssueNo(String issueNo) {
-        return goodRequisitionItemRepository.findByIssueNo(issueNo);
+//    public List<GoodRequisitionItem> getItemsByIssueNo(String issueNo) {
+//        return goodRequisitionItemRepository.findByIssueNo(issueNo);
+//    }
+
+    public List<GoodRequisitionItemResponse> getItemsByIssueNo(String issueNo) {
+        List<GoodRequisitionItem> items = goodRequisitionItemRepository.findByIssueNo(issueNo);
+        return items.stream().map(item -> {
+            GoodRequisitionItemResponse res = new GoodRequisitionItemResponse();
+            res.setId(item.getId());
+            res.setItemCode(item.getItemCode());
+            res.setItemName(item.getItemName());
+            res.setUnit(item.getUnit());
+            res.setRequiredQuantity(item.getRequiredQuantity());
+            res.setApprovedQuantity(item.getApprovedQuantity());
+            res.setIssuedQuantity(item.getIssuedQuantity());
+//            res.setRate(item.getRate());
+//            res.setTotal(item.getTotal());
+            res.setIssueNo(item.getIssueNo());
+            res.setReceivedDate(item.getReceivedDate());
+            return res;
+        }).toList();
     }
 
 

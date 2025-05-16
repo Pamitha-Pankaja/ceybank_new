@@ -66,10 +66,11 @@ public class GoodRequisitionController {
     }
 
     @GetMapping("/issue/items/{issueNo}")
-    public ResponseEntity<List<GoodRequisitionItem>> getItemsForIssueNo(@PathVariable String issueNo) {
-        List<GoodRequisitionItem> items = goodRequisitionService.getItemsByIssueNo(issueNo);
-        return ResponseEntity.ok(items);
+    public ResponseEntity<List<GoodRequisitionItemResponse>> getItemsForIssueNo(@PathVariable String issueNo) {
+        return ResponseEntity.ok(goodRequisitionService.getItemsByIssueNo(issueNo));
     }
+
+
 
 
     @GetMapping("/all")
