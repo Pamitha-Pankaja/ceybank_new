@@ -1,5 +1,7 @@
 package com.example.ceybank.controllers;
 
+import com.example.ceybank.models.BeverageBill;
+import com.example.ceybank.models.FoodBill;
 import com.example.ceybank.models.Reservation;
 import com.example.ceybank.models.Room;
 import com.example.ceybank.responses.*;
@@ -57,6 +59,38 @@ public class ReservationController {
     public ResponseEntity<List<ReservationFullResponse>> getAllReservationDetails() {
         return ResponseEntity.ok(reservationService.getAllReservationDetails());
     }
+
+
+
+    @GetMapping("/bills/meals")
+    public ResponseEntity<List<FoodBillResponse>> getAllFoodBills() {
+        return ResponseEntity.ok(reservationService.getAllFoodBillResponses());
+    }
+
+    @GetMapping("/bills/beverages")
+    public ResponseEntity<List<BeverageBillResponse>> getAllBeverageBills() {
+        return ResponseEntity.ok(reservationService.getAllBeverageBillResponses());
+    }
+
+
+
+    @GetMapping("/bills/meals/by-date")
+    public ResponseEntity<List<FoodBillResponse>> getFoodBillsByDate(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(reservationService.getFoodBillsByDate(date));
+    }
+
+    @GetMapping("/bills/beverages/by-date")
+    public ResponseEntity<List<BeverageBillResponse>> getBeverageBillsByDate(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(reservationService.getBeverageBillsByDate(date));
+    }
+
+    @GetMapping("/bills/meals/by-meal")
+    public ResponseEntity<List<FoodBillResponse>> getFoodBillsByMealType(@RequestParam String mealType) {
+        return ResponseEntity.ok(reservationService.getFoodBillsByMealType(mealType));
+    }
+
 
 
 

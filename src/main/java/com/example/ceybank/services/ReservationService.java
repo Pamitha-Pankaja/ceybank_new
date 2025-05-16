@@ -1,12 +1,10 @@
 package com.example.ceybank.services;
 
 import com.example.ceybank.models.*;
-import com.example.ceybank.repositories.CustomerRepository;
-import com.example.ceybank.repositories.ReservationRepository;
-import com.example.ceybank.repositories.ReservationRoomRepository;
-import com.example.ceybank.repositories.RoomRepository;
+import com.example.ceybank.repositories.*;
 import com.example.ceybank.responses.*;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,6 +19,12 @@ public class ReservationService {
     private final RoomRepository roomRepository;
     private final ReservationRepository reservationRepository;
     private final ReservationRoomRepository reservationRoomRepository;
+
+    @Autowired
+    FoodBillRepository foodBillRepository;
+
+    @Autowired
+    BeverageBillRepository beverageBillRepository;
 
     public ReservationService(CustomerRepository customerRepository,
                               RoomRepository roomRepository,
@@ -355,6 +359,134 @@ public class ReservationService {
 
         return responses;
     }
+
+
+
+
+    public List<FoodBillResponse> getAllFoodBillResponses() {
+        return foodBillRepository.findAll().stream().map(fb -> {
+            FoodBillResponse res = new FoodBillResponse();
+            res.setFoodBillId(fb.getFoodBillId());
+            res.setRoomNo(fb.getReservationRoom().getRoom().getRoomNo());
+            res.setDate(fb.getDate());
+            res.setMealType(fb.getMealType());
+            res.setGrandTotal(fb.getGrandTotal());
+
+            List<FoodBillResponse.FoodBillItemResponse> items = fb.getFoodBillItems().stream().map(item -> {
+                FoodBillResponse.FoodBillItemResponse i = new FoodBillResponse.FoodBillItemResponse();
+                i.setId(item.getId());
+                i.setFoodName(item.getFood().getName());
+                i.setPortions(item.getPortions());
+                i.setTotal(item.getTotal());
+                return i;
+            }).toList();
+
+            res.setFoodBillItems(items);
+            return res;
+        }).toList();
+    }
+
+
+    public List<BeverageBillResponse> getAllBeverageBillResponses() {
+        return beverageBillRepository.findAll().stream().map(bb -> {
+            BeverageBillResponse res = new BeverageBillResponse();
+            res.setBeverageBillId(bb.getBeverageBillId());
+            res.setRoomNo(bb.getReservationRoom().getRoom().getRoomNo());
+            res.setDate(bb.getDate());
+            res.setMealType(bb.getMealType());
+            res.setGrandTotal(bb.getGrandTotal());
+
+            List<BeverageBillResponse.BeverageBillItemResponse> items = bb.getBeverageBillItems().stream().map(item -> {
+                BeverageBillResponse.BeverageBillItemResponse i = new BeverageBillResponse.BeverageBillItemResponse();
+                i.setId(item.getId());
+                i.setBeverageName(item.getBeverage().getName());
+                i.setBottlesOrGlasses(item.getBottlesOrGlasses());
+                i.setTotal(item.getTotal());
+                return i;
+            }).toList();
+
+            res.setBeverageBillItems(items);
+            return res;
+        }).toList();
+    }
+
+
+
+    public List<FoodBillResponse> getFoodBillsByDate(LocalDate date) {
+        return foodBillRepository.findByDate(date).stream().map(fb -> {
+            FoodBillResponse res = new FoodBillResponse();
+            res.setFoodBillId(fb.getFoodBillId());
+            res.setRoomNo(fb.getReservationRoom().getRoom().getRoomNo());
+            res.setDate(fb.getDate());
+            res.setMealType(fb.getMealType());
+            res.setGrandTotal(fb.getGrandTotal());
+
+            List<FoodBillResponse.FoodBillItemResponse> items = fb.getFoodBillItems().stream().map(item -> {
+                FoodBillResponse.FoodBillItemResponse i = new FoodBillResponse.FoodBillItemResponse();
+                i.setId(item.getId());
+                i.setFoodName(item.getFood().getName());
+                i.setPortions(item.getPortions());
+                i.setTotal(item.getTotal());
+                return i;
+            }).toList();
+
+            res.setFoodBillItems(items);
+            return res;
+        }).toList();
+    }
+
+
+
+    public List<BeverageBillResponse> getBeverageBillsByDate(LocalDate date) {
+        return beverageBillRepository.findByDate(date).stream().map(bb -> {
+            BeverageBillResponse res = new BeverageBillResponse();
+            res.setBeverageBillId(bb.getBeverageBillId());
+            res.setRoomNo(bb.getReservationRoom().getRoom().getRoomNo());
+            res.setDate(bb.getDate());
+            res.setMealType(bb.getMealType());
+            res.setGrandTotal(bb.getGrandTotal());
+
+            List<BeverageBillResponse.BeverageBillItemResponse> items = bb.getBeverageBillItems().stream().map(item -> {
+                BeverageBillResponse.BeverageBillItemResponse i = new BeverageBillResponse.BeverageBillItemResponse();
+                i.setId(item.getId());
+                i.setBeverageName(item.getBeverage().getName());
+                i.setBottlesOrGlasses(item.getBottlesOrGlasses());
+                i.setTotal(item.getTotal());
+                return i;
+            }).toList();
+
+            res.setBeverageBillItems(items);
+            return res;
+        }).toList();
+    }
+
+
+    public List<FoodBillResponse> getFoodBillsByMealType(String mealType) {
+        return foodBillRepository.findByMealType(mealType).stream().map(fb -> {
+            FoodBillResponse res = new FoodBillResponse();
+            res.setFoodBillId(fb.getFoodBillId());
+            res.setRoomNo(fb.getReservationRoom().getRoom().getRoomNo());
+            res.setDate(fb.getDate());
+            res.setMealType(fb.getMealType());
+            res.setGrandTotal(fb.getGrandTotal());
+
+            List<FoodBillResponse.FoodBillItemResponse> items = fb.getFoodBillItems().stream().map(item -> {
+                FoodBillResponse.FoodBillItemResponse i = new FoodBillResponse.FoodBillItemResponse();
+                i.setId(item.getId());
+                i.setFoodName(item.getFood().getName());
+                i.setPortions(item.getPortions());
+                i.setTotal(item.getTotal());
+                return i;
+            }).toList();
+
+            res.setFoodBillItems(items);
+            return res;
+        }).toList();
+    }
+
+
+
+
 
 }
 
