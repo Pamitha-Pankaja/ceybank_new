@@ -485,6 +485,40 @@ public class ReservationService {
     }
 
 
+    public RoomBillResponse getRoomBillByReservation(Long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new RuntimeException("Reservation not found"));
+
+        List<RoomBillResponse.RoomDetail> roomDetails = new ArrayList<>();
+        long nights = ChronoUnit.DAYS.between(reservation.getInDate(), reservation.getOutDate());
+        double roomTotal = 0.0;
+
+        for (ReservationRoom rr : reservation.getReservationRooms()) {
+            Room room = rr.getRoom();
+            RoomType type = room.getRoomType();
+            double rate = type.getCurrentRate();
+
+            RoomBillResponse.RoomDetail detail = new RoomBillResponse.RoomDetail();
+            detail.setRoomNo(room.getRoomNo());
+            detail.setRoomType(type.getName());
+            detail.setRatePerNight(rate);
+
+            roomDetails.add(detail);
+            roomTotal += rate * nights;
+        }
+
+        RoomBillResponse response = new RoomBillResponse();
+        response.setReservationId(reservation.getReservationId());
+        response.setInDate(reservation.getInDate());
+        response.setOutDate(reservation.getOutDate());
+        response.setNights((int) nights);
+        response.setRoomTotal(roomTotal);
+        response.setRooms(roomDetails);
+
+        return response;
+    }
+
+
 
 
 

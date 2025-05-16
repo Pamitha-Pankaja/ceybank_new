@@ -92,6 +92,12 @@ public class ReservationController {
     }
 
 
+    @GetMapping("/{reservationId}/room-bill")
+    public ResponseEntity<RoomBillResponse> getRoomBill(@PathVariable Long reservationId) {
+        return ResponseEntity.ok(reservationService.getRoomBillByReservation(reservationId));
+    }
+
+
 
 
 }
