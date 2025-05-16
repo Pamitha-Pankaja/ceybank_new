@@ -5,12 +5,12 @@ import com.example.ceybank.models.Room;
 import com.example.ceybank.repositories.ReservationRoomRepository;
 import com.example.ceybank.repositories.RoomRepository;
 import com.example.ceybank.repositories.RoomTypeRepository;
+import com.example.ceybank.responses.RoomAvailabilityResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class RoomService {
@@ -76,19 +76,54 @@ public class RoomService {
                 .toList();
     }
 
-    public List<Room> getAvailableRoomsByDateRange(LocalDate inDate, LocalDate outDate) {
-        List<Room> allAvailableRooms = roomRepository.findByStatus("available");
+//    public List<Room> getAvailableRoomsByDateRange(LocalDate inDate, LocalDate outDate) {
+//        List<Room> allAvailableRooms = roomRepository.findByStatus("available");
+//
+//        List<String> bookedRoomNos = reservationRoomRepository.findConflictingReservations(inDate, outDate)
+//                .stream()
+//                .map(rr -> rr.getRoom().getRoomNo())
+//                .distinct()
+//                .toList();
+//
+//        return allAvailableRooms.stream()
+//                .filter(room -> !bookedRoomNos.contains(room.getRoomNo()))
+//                .toList();
+//    }
+//
 
-        List<String> bookedRoomNos = reservationRoomRepository.findConflictingReservations(inDate, outDate)
-                .stream()
-                .map(rr -> rr.getRoom().getRoomNo())
-                .distinct()
-                .toList();
 
-        return allAvailableRooms.stream()
-                .filter(room -> !bookedRoomNos.contains(room.getRoomNo()))
-                .toList();
+    public List<RoomAvailabilityResponse> getRoomAvailabilityPerDateRange(LocalDate inDate, LocalDate outDate) {
+        List<Room> availableRooms = roomRepository.findByStatus("available");
+        Map<String, List<LocalDate>> availabilityMap = new HashMap<>();
+
+        // Loop through each date
+        for (LocalDate date = inDate; date.isBefore(outDate); date = date.plusDays(1)) {
+
+            // Get all rooms booked for this date
+            List<String> bookedRoomNos = reservationRoomRepository.findRoomsBookedOnDate(date)
+                    .stream()
+                    .map(rr -> rr.getRoom().getRoomNo())
+                    .toList();
+
+            // For each available room, check if it's not booked on this date
+            for (Room room : availableRooms) {
+                if (!bookedRoomNos.contains(room.getRoomNo())) {
+                    availabilityMap
+                            .computeIfAbsent(room.getRoomNo(), k -> new ArrayList<>())
+                            .add(date);
+                }
+            }
+        }
+
+        // Map result to DTOs
+        return availabilityMap.entrySet().stream().map(entry -> {
+            RoomAvailabilityResponse dto = new RoomAvailabilityResponse();
+            dto.setRoomNo(entry.getKey());
+            dto.setAvailableDates(entry.getValue());
+            return dto;
+        }).toList();
     }
+
 
     public List<Room> getBookedRoomsByDateRange(LocalDate inDate, LocalDate outDate) {
         return reservationRoomRepository.findConflictingReservations(inDate, outDate)

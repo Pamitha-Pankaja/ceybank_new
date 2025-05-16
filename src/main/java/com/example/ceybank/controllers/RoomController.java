@@ -1,6 +1,7 @@
 package com.example.ceybank.controllers;
 
 import com.example.ceybank.models.Room;
+import com.example.ceybank.responses.RoomAvailabilityResponse;
 import com.example.ceybank.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -62,11 +63,19 @@ public class RoomController {
         return ResponseEntity.ok(roomService.getBookedRoomsByDate(date));
     }
 
+//    @GetMapping("/available-on-range")
+//    public ResponseEntity<List<Room>> getAvailableRoomsOnRange(@RequestParam("inDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inDate,
+//                                                               @RequestParam("outDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate outDate) {
+//        return ResponseEntity.ok(roomService.getAvailableRoomsByDateRange(inDate, outDate));
+//    }
+
     @GetMapping("/available-on-range")
-    public ResponseEntity<List<Room>> getAvailableRoomsOnRange(@RequestParam("inDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inDate,
-                                                               @RequestParam("outDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate outDate) {
-        return ResponseEntity.ok(roomService.getAvailableRoomsByDateRange(inDate, outDate));
+    public ResponseEntity<List<RoomAvailabilityResponse>> getRoomAvailabilityByDateRange(
+            @RequestParam("inDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inDate,
+            @RequestParam("outDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate outDate) {
+        return ResponseEntity.ok(roomService.getRoomAvailabilityPerDateRange(inDate, outDate));
     }
+
 
     @GetMapping("/booked-on-range")
     public ResponseEntity<List<Room>> getBookedRoomsOnRange(@RequestParam("inDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inDate,
