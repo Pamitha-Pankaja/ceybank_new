@@ -45,16 +45,28 @@ public interface ReservationRoomRepository extends JpaRepository<ReservationRoom
     Optional<ReservationRoom> findByReservationIdAndRoomNo(@Param("reservationId") Long reservationId, @Param("roomNo") String roomNo);
 
 
+//    @Query("""
+//    SELECT rr FROM ReservationRoom rr
+//    JOIN rr.reservation r
+//    WHERE rr.room.roomNo = :roomNo
+//      AND :date >= r.inDate AND :date < r.outDate
+//""")
+//    Optional<ReservationRoom> findActiveReservationByRoomAndDate(
+//            @Param("roomNo") String roomNo,
+//            @Param("date") LocalDate date
+//    );
+
     @Query("""
-    SELECT rr FROM ReservationRoom rr
-    JOIN rr.reservation r
-    WHERE rr.room.roomNo = :roomNo
-      AND :date >= r.inDate AND :date < r.outDate
+SELECT rr FROM ReservationRoom rr
+JOIN rr.reservation r
+WHERE rr.room.roomNo = :roomNo
+  AND (:date >= r.inDate AND :date <= r.outDate)
 """)
-    Optional<ReservationRoom> findActiveReservationByRoomAndDate(
+    List<ReservationRoom> findAllReservationsByRoomAndDate(
             @Param("roomNo") String roomNo,
             @Param("date") LocalDate date
     );
+
 
 
 

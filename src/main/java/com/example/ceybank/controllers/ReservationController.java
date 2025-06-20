@@ -47,12 +47,20 @@ public class ReservationController {
     }
 
 
+//    @GetMapping("/active")
+//    public ResponseEntity<ActiveReservationResponse> getActiveReservation(
+//            @RequestParam String roomNo,
+//            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+//        return ResponseEntity.ok(reservationService.getActiveReservation(roomNo, date));
+//    }
+
     @GetMapping("/active")
-    public ResponseEntity<ActiveReservationResponse> getActiveReservation(
+    public ResponseEntity<List<ActiveReservationResponse>> getActiveReservations(
             @RequestParam String roomNo,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return ResponseEntity.ok(reservationService.getActiveReservation(roomNo, date));
+        return ResponseEntity.ok(reservationService.getAllReservationsForRoomAndDate(roomNo, date));
     }
+
 
 
     @GetMapping("/full-details")

@@ -284,18 +284,33 @@ public class ReservationService {
     }
 
 
-    public ActiveReservationResponse getActiveReservation(String roomNo, LocalDate date) {
-        ReservationRoom rr = reservationRoomRepository.findActiveReservationByRoomAndDate(roomNo, date)
-                .orElseThrow(() -> new RuntimeException("No active reservation found for this room and date"));
+//    public ActiveReservationResponse getActiveReservation(String roomNo, LocalDate date) {
+//        ReservationRoom rr = reservationRoomRepository.findActiveReservationByRoomAndDate(roomNo, date)
+//                .orElseThrow(() -> new RuntimeException("No active reservation found for this room and date"));
+//
+//        ActiveReservationResponse response = new ActiveReservationResponse();
+//        response.setReservationId(rr.getReservation().getReservationId());
+//        response.setName(rr.getReservation().getCustomer().getNameInFull());
+//        response.setNicPassportPf(rr.getReservation().getCustomer().getNicPassportPf());
+//        response.setRoomNo(roomNo);
+//
+//        return response;
+//    }
 
-        ActiveReservationResponse response = new ActiveReservationResponse();
-        response.setReservationId(rr.getReservation().getReservationId());
-        response.setName(rr.getReservation().getCustomer().getNameInFull());
-        response.setNicPassportPf(rr.getReservation().getCustomer().getNicPassportPf());
-        response.setRoomNo(roomNo);
+    public List<ActiveReservationResponse> getAllReservationsForRoomAndDate(String roomNo, LocalDate date) {
+        List<ReservationRoom> reservationRooms = reservationRoomRepository
+                .findAllReservationsByRoomAndDate(roomNo, date);
 
-        return response;
+        return reservationRooms.stream().map(rr -> {
+            ActiveReservationResponse res = new ActiveReservationResponse();
+            res.setReservationId(rr.getReservation().getReservationId());
+            res.setName(rr.getReservation().getCustomer().getNameInFull());
+            res.setNicPassportPf(rr.getReservation().getCustomer().getNicPassportPf());
+            res.setRoomNo(roomNo);
+            return res;
+        }).toList();
     }
+
 
 
 
