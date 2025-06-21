@@ -624,6 +624,26 @@ public class ReservationService {
     }
 
 
+    public CustomerResponse getCustomerByNic(String nicPassportPf) {
+        Customer customer = customerRepository.findByNicPassportPf(nicPassportPf)
+                .orElseThrow(() -> new RuntimeException("Customer not found with NIC/Passport: " + nicPassportPf));
+
+        CustomerResponse response = new CustomerResponse();
+        response.setCustomerId(customer.getCustomerId());
+        response.setTitle(customer.getTitle());
+        response.setNameWithInitials(customer.getNameWithInitials());
+        response.setNameInFull(customer.getNameInFull());
+        response.setNationality(customer.getNationality());
+        response.setNicPassportPf(customer.getNicPassportPf());
+        response.setTelNo(customer.getTelNo());
+        response.setOfficeTel(customer.getOfficeTel());
+        response.setDurationOfStay(customer.getDurationOfStay());
+        response.setHomeAddress(customer.getHomeAddress());
+        response.setOfficeAddress(customer.getOfficeAddress());
+
+        return response;
+    }
+
 
 
 

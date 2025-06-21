@@ -1,11 +1,9 @@
 package com.example.ceybank.controllers;
 
-import com.example.ceybank.models.BeverageBill;
-import com.example.ceybank.models.FoodBill;
-import com.example.ceybank.models.Reservation;
-import com.example.ceybank.models.Room;
+import com.example.ceybank.models.*;
 import com.example.ceybank.responses.*;
 import com.example.ceybank.services.ReservationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -122,7 +120,10 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getBeverageBillById(beverageBillId));
     }
 
-
+    @GetMapping("/by-nic")
+    public ResponseEntity<CustomerResponse> getCustomerByNic(@RequestParam String nic) {
+        return ResponseEntity.ok(reservationService.getCustomerByNic(nic));
+    }
 
 
 
