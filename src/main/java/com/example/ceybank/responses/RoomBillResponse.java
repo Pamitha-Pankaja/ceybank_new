@@ -9,6 +9,8 @@ public class RoomBillResponse {
     private LocalDate outDate;
     private int nights;
     private double roomTotal;
+    private String customerName;
+    private String nicPassportPf;
     private List<RoomDetail> rooms;
 
     // Getters and Setters
@@ -60,6 +62,21 @@ public class RoomBillResponse {
         this.rooms = rooms;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getNicPassportPf() {
+        return nicPassportPf;
+    }
+
+    public void setNicPassportPf(String nicPassportPf) {
+        this.nicPassportPf = nicPassportPf;
+    }
     // Nested static class
     public static class RoomDetail {
         private String roomNo;

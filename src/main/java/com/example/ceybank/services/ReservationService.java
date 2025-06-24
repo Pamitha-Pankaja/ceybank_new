@@ -523,12 +523,15 @@ public class ReservationService {
         }
 
         RoomBillResponse response = new RoomBillResponse();
+        CustomerResponse cus = new CustomerResponse();
         response.setReservationId(reservation.getReservationId());
         response.setInDate(reservation.getInDate());
         response.setOutDate(reservation.getOutDate());
         response.setNights((int) nights);
         response.setRoomTotal(roomTotal);
         response.setRooms(roomDetails);
+        response.setCustomerName(reservation.getCustomer().getNameInFull());
+        response.setNicPassportPf(reservation.getCustomer().getNicPassportPf());
 
         return response;
     }
