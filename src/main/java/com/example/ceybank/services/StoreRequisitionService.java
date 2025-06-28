@@ -86,12 +86,22 @@ public class StoreRequisitionService {
         return storeRequisitionRepository.save(requisition); // only basic data saved here
     }
 
-    public void approveItem(ApproveStoreRequisitionItemRequest request) {
-        StoreRequisitionItem item = storeRequisitionItemRepository.findById(request.getItemId())
-                .orElseThrow(() -> new RuntimeException("Store Requisition Item not found"));
-        item.setApprovedQuantity(request.getApprovedQuantity());
-        storeRequisitionItemRepository.save(item);
+//    public void approveItem(ApproveStoreRequisitionItemRequest request) {
+//        StoreRequisitionItem item = storeRequisitionItemRepository.findById(request.getItemId())
+//                .orElseThrow(() -> new RuntimeException("Store Requisition Item not found"));
+//        item.setApprovedQuantity(request.getApprovedQuantity());
+//        storeRequisitionItemRepository.save(item);
+//    }
+
+    public void approveItems(ApproveStoreRequisitionItemRequest request) {
+        for (ApproveStoreRequisitionItemRequest.ItemApproval approval : request.getItems()) {
+            StoreRequisitionItem item = storeRequisitionItemRepository.findById(approval.getItemId())
+                    .orElseThrow(() -> new RuntimeException("Store Requisition Item not found: ID " + approval.getItemId()));
+            item.setApprovedQuantity(approval.getApprovedQuantity());
+            storeRequisitionItemRepository.save(item);
+        }
     }
+
 
 //    @Transactional
 //    public void receiveItem(ReceiveStoreRequisitionItemRequest request) {
