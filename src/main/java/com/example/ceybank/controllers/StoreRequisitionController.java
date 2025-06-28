@@ -43,18 +43,19 @@ public class StoreRequisitionController {
         return ResponseEntity.ok(response);
     }
 
-//    // Manager approves quantity
-//    @PutMapping("/approve-item")
-//    public ResponseEntity<String> approveItem(@RequestBody ApproveStoreRequisitionItemRequest request) {
-//        storeRequisitionService.approveItem(request);
-//        return ResponseEntity.ok("Item approved successfully");
-//    }
+    // Manager approves quantity
+    @PutMapping("/approve-item")
+    public ResponseEntity<String> approveItem(@RequestBody ApproveStoreRequisitionItemRequest request) {
+        storeRequisitionService.approveItem(request);
+        return ResponseEntity.ok("Item approved successfully");
+    }
 
-    @PutMapping("/approve-items")
-    public ResponseEntity<String> approveItems(@RequestBody ApproveStoreRequisitionItemRequest request) {
+    @PutMapping("/approve-itemslist")
+    public ResponseEntity<String> approveItems(@RequestBody ApproveStoreRequisitionItemListRequest request) {
         storeRequisitionService.approveItems(request);
         return ResponseEntity.ok("Items approved successfully");
     }
+
 
 
     // Storekeeper receives item
