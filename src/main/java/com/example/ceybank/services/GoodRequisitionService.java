@@ -49,6 +49,16 @@ public class GoodRequisitionService {
         goodRequisitionItemRepository.save(item);
     }
 
+    public void approveItems(ApproveGoodRequisitionItemListRequest request) {
+        for (ApproveGoodRequisitionItemListRequest.ItemApproval approval : request.getItems()) {
+            GoodRequisitionItem item = goodRequisitionItemRepository.findById(approval.getItemId())
+                    .orElseThrow(() -> new RuntimeException("Good Requisition Item not found: ID " + approval.getItemId()));
+            item.setApprovedQuantity(approval.getApprovedQuantity());
+            goodRequisitionItemRepository.save(item);
+        }
+    }
+
+
     public void approveRequisitionStatus(Long id) {
         GoodRequisition requisition = goodRequisitionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Store Requisition not found"));

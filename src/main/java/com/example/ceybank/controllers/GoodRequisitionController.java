@@ -38,6 +38,15 @@ public class GoodRequisitionController {
         return ResponseEntity.ok("Item approved successfully");
     }
 
+    @PutMapping("/approve-itemslist")
+    public ResponseEntity<String> approveItems(@RequestBody ApproveGoodRequisitionItemListRequest request) {
+        goodRequisitionService.approveItems(request);
+        return ResponseEntity.ok("Good Requisition Items approved successfully");
+    }
+
+
+
+
     @PutMapping("/issue-batch")
     public ResponseEntity<String> issueBatch(@RequestBody ReceiveGoodRequisitionBatchRequest request) {
         goodRequisitionService.issueBatch(request);
