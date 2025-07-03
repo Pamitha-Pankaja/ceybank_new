@@ -99,6 +99,13 @@ public class GoodRequisitionController {
         return ResponseEntity.ok("Store requisition approved successfully");
     }
 
+    @PutMapping("/approve-statuses")
+    public ResponseEntity<String> approveGoodRequisitionStatuses(@RequestBody ApproveGoodRequisitionListRequest request) {
+        goodRequisitionService.approveGoodRequisitionStatuses(request);
+        return ResponseEntity.ok("Good requisitions approved successfully");
+    }
+
+
 
 
 

@@ -57,6 +57,16 @@ public class GoodRequisitionService {
         goodRequisitionRepository.save(requisition);
     }
 
+    public void approveGoodRequisitionStatuses(ApproveGoodRequisitionListRequest request) {
+        for (Long id : request.getRequisitionIds()) {
+            GoodRequisition requisition = goodRequisitionRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Good Requisition not found: ID " + id));
+            requisition.setStatus("APPROVED");
+            goodRequisitionRepository.save(requisition);
+        }
+    }
+
+
 
     @Transactional
     public void issueBatch(ReceiveGoodRequisitionBatchRequest request) {
