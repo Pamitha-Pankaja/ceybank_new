@@ -182,6 +182,16 @@ public class StoreRequisitionService {
         storeRequisitionRepository.save(requisition);
     }
 
+    public void approveRequisitionStatuses(ApproveStoreRequisitionListRequest request) {
+        for (Long id : request.getRequisitionIds()) {
+            StoreRequisition requisition = storeRequisitionRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Store Requisition not found: ID " + id));
+            requisition.setStatus("APPROVED");
+            storeRequisitionRepository.save(requisition);
+        }
+    }
+
+
 
     public List<StoreRequisitionResponse> getAllRequisitionResponses() {
         List<StoreRequisition> requisitions = storeRequisitionRepository.findAll();

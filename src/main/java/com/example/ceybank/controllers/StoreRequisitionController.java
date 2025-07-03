@@ -77,6 +77,14 @@ public class StoreRequisitionController {
         return ResponseEntity.ok("Store requisition approved successfully");
     }
 
+    @PutMapping("/approve-statuses")
+    public ResponseEntity<String> approveRequisitionStatuses(@RequestBody ApproveStoreRequisitionListRequest request) {
+        storeRequisitionService.approveRequisitionStatuses(request);
+        return ResponseEntity.ok("Store requisitions approved successfully");
+    }
+
+
+
 
     // Get all store requisitions
     @GetMapping("/all")
