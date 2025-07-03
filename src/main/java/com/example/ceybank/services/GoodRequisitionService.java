@@ -49,6 +49,14 @@ public class GoodRequisitionService {
         goodRequisitionItemRepository.save(item);
     }
 
+    public void approveRequisitionStatus(Long id) {
+        GoodRequisition requisition = goodRequisitionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Store Requisition not found"));
+
+        requisition.setStatus("APPROVED");
+        goodRequisitionRepository.save(requisition);
+    }
+
 
     @Transactional
     public void issueBatch(ReceiveGoodRequisitionBatchRequest request) {

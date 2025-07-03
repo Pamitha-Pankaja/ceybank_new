@@ -93,6 +93,12 @@ public class GoodRequisitionController {
         return ResponseEntity.ok(items);
     }
 
+    @PutMapping("/approve-status/{id}")
+    public ResponseEntity<String> approveRequisitionStatus(@PathVariable Long id) {
+        goodRequisitionService.approveRequisitionStatus(id);
+        return ResponseEntity.ok("Store requisition approved successfully");
+    }
+
 
 
 
