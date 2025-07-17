@@ -103,19 +103,36 @@ public class ReservationService {
 
     @Transactional
     public Reservation createReservation(ReservationRequest request) {
-        // Step 1: Save Customer
-        Customer customer = new Customer();
-        customer.setTitle(request.getTitle());
-        customer.setNameWithInitials(request.getNameWithInitials());
-        customer.setNameInFull(request.getNameInFull());
-        customer.setNationality(request.getNationality());
-        customer.setNicPassportPf(request.getNicPassportPf());
-        customer.setTelNo(request.getTelNo());
-        customer.setOfficeTel(request.getOfficeTel());
-        customer.setDurationOfStay(request.getDurationOfStay());
-        customer.setHomeAddress(request.getHomeAddress());
-        customer.setOfficeAddress(request.getOfficeAddress());
-        customer = customerRepository.save(customer);
+        Customer customer = customerRepository.findByNicPassportPf(request.getNicPassportPf())
+                .map(existing -> {
+                    // Update only if new values are different
+                    existing.setTitle(request.getTitle());
+                    existing.setNameWithInitials(request.getNameWithInitials());
+                    existing.setNameInFull(request.getNameInFull());
+                    existing.setNationality(request.getNationality());
+                    existing.setTelNo(request.getTelNo());
+                    existing.setOfficeTel(request.getOfficeTel());
+                    existing.setDurationOfStay(request.getDurationOfStay());
+                    existing.setHomeAddress(request.getHomeAddress());
+                    existing.setOfficeAddress(request.getOfficeAddress());
+                    return customerRepository.save(existing);
+                })
+                .orElseGet(() -> {
+                    // Create new if not found
+                    Customer newCustomer = new Customer();
+                    newCustomer.setTitle(request.getTitle());
+                    newCustomer.setNameWithInitials(request.getNameWithInitials());
+                    newCustomer.setNameInFull(request.getNameInFull());
+                    newCustomer.setNationality(request.getNationality());
+                    newCustomer.setNicPassportPf(request.getNicPassportPf());
+                    newCustomer.setTelNo(request.getTelNo());
+                    newCustomer.setOfficeTel(request.getOfficeTel());
+                    newCustomer.setDurationOfStay(request.getDurationOfStay());
+                    newCustomer.setHomeAddress(request.getHomeAddress());
+                    newCustomer.setOfficeAddress(request.getOfficeAddress());
+                    return customerRepository.save(newCustomer);
+                });
+
 
         // Step 2: Create Reservation
         Reservation reservation = new Reservation();
